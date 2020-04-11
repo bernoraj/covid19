@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
   deceasedCount;
   hospitalizedCount;
 
-  displayedColumns = ['district', 'hospitalized', 'deceased','recovered'];
+  displayedColumns = ['district', 'confirmed','active','recovered','deceased'];
   dataSource:ExampleDataSource;
   expandedElement: any;
 
@@ -106,10 +106,10 @@ export class DashboardComponent implements OnInit {
 export interface districtElement {
   district: string;
   city: Array<any>[];
-  hospitalized: number;
+  confirmed: number;
   deceased:number;
   recovered: number;
-  detailRow:boolean;
+  active:number;
 }
 
 export class ExampleDataSource extends DataSource<any> {
@@ -149,13 +149,81 @@ export class ExampleDataSource extends DataSource<any> {
           return {
             district: g[0].detecteddistrict,
             city: _.uniqBy(g, 'detectedcity').map(x => x.detectedcity).filter(t => t != "" && t != g[0].detecteddistrict),
-            hospitalized: g.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length,
+            confirmed: g.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length,
             deceased: g.map(y => y.currentstatus).filter(y => y == 'Deceased').length,
             recovered: g.map(y => y.currentstatus).filter(y => y == 'Recovered').length,
-            detailRow:_.uniqBy(g, 'detectedcity').map(x => x.detectedcity).filter(t => t != "" && t != g[0].detecteddistrict).length>0?true:false
+            active:Math.abs(g.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length-(g.map(y => y.currentstatus).filter(y => y == 'Deceased').length+g.map(y => y.currentstatus).filter(y => y == 'Recovered').length))
           }
         }).value();
         
+        console.log('DistrictData',districtData);
+        var cityData =_.chain(dataPiped).groupBy('detectedcity')
+        .map(c=>{
+          return{
+            cityName:c[0].detectedcity,
+            confirmed: c.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length,
+            deceased: c.map(y => y.currentstatus).filter(y => y == 'Deceased').length,
+            recovered: c.map(y => y.currentstatus).filter(y => y == 'Recovered').length,
+            active:Math.abs(c.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length-(c.map(y => y.currentstatus).filter(y => y == 'Deceased').length+c.map(y => y.currentstatus).filter(y => y == 'Recovered').length))
+          }
+        }).value();
+        console.log('CityData',cityData);
+
+       
+        districtData.forEach(t=>{
+          var cityDataTable=[];
+          t.city.forEach(c=>{
+            var temp=cityData.filter(x=>x.cityName==c);
+            cityDataTable.push(temp[0]);
+            
+          })  
+
+          //init
+          var check=0;
+          //find sum of hospitalized,deceased,confirmed
+          var confirmedCount=  cityDataTable.reduce(function(acc,dd){ return acc+dd.confirmed},0);
+          var deceasedCount= cityDataTable.reduce(function(acc,dd){ return acc+dd.deceased},0);
+          var recoveredCount= cityDataTable.reduce(function(acc,dd){ return acc+dd.recovered},0);
+          var activeCount= cityDataTable.reduce(function(acc,dd){ return acc+dd.active},0);
+
+          var unknown={cityName:'Unknown',confirmed:0,active:0,deceased:0,recovered:0};
+          if(confirmedCount!=t.confirmed)
+          {
+            check=1;
+            unknown.confirmed=Math.abs(t.confirmed-confirmedCount);
+          }
+          if(activeCount!=t.active)
+          {
+            check=1;
+            unknown.active=Math.abs(t.active-activeCount);
+          }
+
+
+          if(deceasedCount!=t.deceased)
+          {
+            check=1;
+            unknown.deceased=Math.abs(t.deceased-deceasedCount);
+          }
+
+          if(recoveredCount!=t.recovered)
+          {
+            check=1;
+            unknown.recovered=Math.abs(t.recovered-recoveredCount);
+          }
+
+          if(check==1)
+          {
+            cityDataTable.push(unknown);
+            t.city=(cityDataTable);  
+          }
+          else{
+            t.city=(cityDataTable); 
+          }
+                  
+        });  
+
+        
+        console.log(districtData);
         this.covidData.next(districtData);
         
   })
