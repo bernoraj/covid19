@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -5,7 +6,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HttpModule } from '@angular/http'; 	
-
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatTableModule} from '@angular/material/table';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import{MatIconModule}from '@angular/material/icon'
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:"home"},
@@ -19,9 +25,17 @@ const routes: Routes = [
   ],
   imports: [
     RouterModule.forRoot(routes),
+    CommonModule,
     BrowserModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatTableModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatProgressSpinnerModule,
+    MatIconModule
   ],
   exports: [RouterModule],
   providers: [],
