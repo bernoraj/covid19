@@ -1,15 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DashboardService } from '../dashboard.service'
-import { decimalDigest } from '@angular/compiler/src/i18n/digest';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DataSource, CollectionViewer } from '@angular/cdk/collections';
 import { Observable, of, BehaviorSubject} from 'rxjs';
-//import Rx from 'rxjs/Rx';
 import * as _ from 'lodash';
-import { temporaryDeclaration } from '@angular/compiler/src/compiler_util/expression_converter';
 import { finalize, catchError } from 'rxjs/operators';
-import { ChartDataSets, ChartOptions,ChartType } from 'chart.js';
-import { Color, Label,MultiDataSet ,BaseChartDirective} from 'ng2-charts';
+import { ChartDataSets } from 'chart.js';
+import { Color, Label,BaseChartDirective} from 'ng2-charts';
+import { MatSort } from '@angular/material/sort';
 
 
 @Component({
@@ -40,13 +38,16 @@ export class DashboardComponent implements OnInit {
   hospitalizedCount;
   districtHeaderBlock='TamilNadu';
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
   //chart
   lineChartData: ChartDataSets[] = [];
 
   lineChartLabels: Label[] = [];
-
+  
   lineChartOptions = {
+    maintainAspectRatio: false,
     responsive: true,
+    
   };
 
   lineChartColors: Color[] = [
@@ -67,15 +68,12 @@ export class DashboardComponent implements OnInit {
   {
     var temp=[];
     var tempactive=[];
-    dateblock.forEach(t=>{
+    dateblock.forEach(t=>{     
       this.lineChartLabels.push(t.date);
       temp.push(t.confirmed);
       tempactive.push(t.recovered);
     }); 
-    this.lineChartData=[{data:temp,label:'Confirmed'},{data:tempactive,label:'recovered'}];
-
-    console.log('linechartdata',this.lineChartData);
-    console.log('linechartlabel',this.lineChartLabels);
+    this.lineChartData=[{data:temp,label:'Confirmed'},{data:tempactive,label:'Recovered'}];
    
   }
 
@@ -113,7 +111,7 @@ export class DashboardComponent implements OnInit {
 
     this.dataSource = new ExampleDataSource(this.dashboardService);
     this.dataSource.loadCovidData();
-    
+    //this.dataSource.sort = this.sort;
     setTimeout(() => { 
       this.chartFun();     
       this.chart.chart.update()

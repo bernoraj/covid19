@@ -1,4 +1,9 @@
+html,body{
 
+  font-family: 'Roboto';
+}
+  
+  
   main{ 
     display:grid;
     grid-template-columns: repeat(2, minmax(100px,1fr));
@@ -16,7 +21,7 @@
       align-items: flex-start;
       
       .header{
-        font-size: minmax(1em,1.2em);
+        font-size: minmax(1em,2em);
         font-weight: bold;
       }
       .update{
@@ -33,14 +38,13 @@
           color: red;
         }
       }
-
-      .stats-chart
-      {
-        // width: 75%;
-        // margin-left:-8em;
-        // border-color: fade-in($color: #000000, $amount: 0);
-        // border-bottom: rgb(167, 111, 42) 1px solid;
-      }
+     
+      .chart-wrapper {
+        position: relative;
+        margin: auto;
+        height: 40vh;
+        width: 40vw;
+        }
     }
     // .card{
     //     //border:1px black solid;
@@ -88,7 +92,7 @@
 }
 
 path{
-    fill:orangered;
+    fill:darkseagreen;
     stroke: rgb(252, 252, 252);
     stroke-width: 1px;
     /* transition: fill 0.3ms; */
@@ -112,8 +116,9 @@ path:hover{
 
 .MasterTable{
   display: grid;
-  grid-template-columns: 1fr 1fr; 
+  grid-template-columns: 1fr;
   align-items: baseline;
+  justify-items: center;
 
   table {
     width:minmax(100px,20em); 
@@ -123,6 +128,7 @@ path:hover{
   
   tr.example-detail-row {
     height: 0;
+    align-content: center;
   }
   
   tr.example-element-row:not(.example-expanded-row):hover {
@@ -135,6 +141,7 @@ path:hover{
   
   .example-element-row td {
     border-bottom-width: 0;
+    justify-content:flex-end;
   }
   
   .example-element-detail {
@@ -172,13 +179,15 @@ path:hover{
   
   .citytable{
     width:100%;
-    height:minmax(100px,20em); 
+    height:100%; 
+    
   }
   
   .mainTableHeader{  
     font-weight: bold;
     text-transform: capitalize;
     background: mediumslateblue;
+    justify-content:flex-end;
   }
   
 }
