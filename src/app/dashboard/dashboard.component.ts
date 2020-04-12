@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DashboardService } from '../dashboard.service'
 import { decimalDigest } from '@angular/compiler/src/i18n/digest';
 import { animate, state, style, transition, trigger } from '@angular/animations';
@@ -8,6 +8,9 @@ import { Observable, of, BehaviorSubject} from 'rxjs';
 import * as _ from 'lodash';
 import { temporaryDeclaration } from '@angular/compiler/src/compiler_util/expression_converter';
 import { finalize, catchError } from 'rxjs/operators';
+import { ChartDataSets, ChartOptions,ChartType } from 'chart.js';
+import { Color, Label,MultiDataSet ,BaseChartDirective} from 'ng2-charts';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -31,10 +34,73 @@ export class DashboardComponent implements OnInit {
   //final
   maleCount;
   femaleCount;
-  recoveredCount;
-  confirmedCount;
-  deceasedCount;
+  recoveredCount=0;
+  confirmedCount=0;
+  deceasedCount=0;
   hospitalizedCount;
+  districtHeaderBlock='TamilNadu';
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
+  //chart
+  lineChartData: ChartDataSets[] = [];
+
+  lineChartLabels: Label[] = [];
+
+  lineChartOptions = {
+    responsive: true,
+  };
+
+  lineChartColors: Color[] = [
+    {
+      borderColor: 'rgb(255,0,0)',
+      backgroundColor: 'white',
+    }, 
+    {
+      borderColor: 'green',
+      backgroundColor: 'white',
+    }
+  ];
+  
+  lineChartPlugins = [];
+  lineChartType = 'line';
+
+  chartFun()
+  {
+    var temp=[];
+    var tempactive=[];
+    dateblock.forEach(t=>{
+      this.lineChartLabels.push(t.date);
+      temp.push(t.confirmed);
+      tempactive.push(t.recovered);
+    }); 
+    this.lineChartData=[{data:temp,label:'Confirmed'},{data:tempactive,label:'recovered'}];
+
+    console.log('linechartdata',this.lineChartData);
+    console.log('linechartlabel',this.lineChartLabels);
+   
+  }
+
+  Stats(){
+
+    if(this.districtHeaderBlock!='TamilNadu' && datablock!=[])
+    {
+        var stats=datablock.filter(t=>t.district==this.districtHeaderBlock);
+        
+        if(stats!=null && stats!=undefined && stats.length>0)
+        {         
+         this.confirmedCount = _.first(stats).confirmed;
+         this.deceasedCount=_.first(stats).deceased;
+         this.recoveredCount=_.first(stats).recovered;
+        }
+        else
+        {
+          this.confirmedCount=0;
+          this.deceasedCount=0;
+          this.recoveredCount=0;
+        }
+      
+    }
+
+  }
 
   displayedColumns = ['district', 'confirmed','active','recovered','deceased'];
   dataSource:ExampleDataSource;
@@ -47,7 +113,15 @@ export class DashboardComponent implements OnInit {
 
     this.dataSource = new ExampleDataSource(this.dashboardService);
     this.dataSource.loadCovidData();
-    console.log(this.dataSource);
+    
+    setTimeout(() => { 
+      this.chartFun();     
+      this.chart.chart.update()
+  }, 2000);
+   
+ 
+    
+    //console.log(this.dataSource);
     // this.dashboardService.getTNStats().subscribe(data=>{      
     //   this.tempData=data;
 
@@ -96,12 +170,13 @@ export class DashboardComponent implements OnInit {
 
 
     // });
-
+  
 
   }
 
 }
-
+let datablock=[];
+let dateblock=[];
 
 export interface districtElement {
   district: string;
@@ -143,7 +218,7 @@ export class ExampleDataSource extends DataSource<any> {
       finalize(() => this.loadingCovidData.next(false))
   )
   .subscribe(dataPiped => {
- 
+      console.log(dataPiped);
       var districtData = _.chain(dataPiped).groupBy('detecteddistrict')
         .map(g => {
           return {
@@ -156,7 +231,18 @@ export class ExampleDataSource extends DataSource<any> {
           }
         }).value();
         
-        console.log('DistrictData',districtData);
+        var dated=_.chain(dataPiped).groupBy('dateannounced')
+        .map(g => {
+          return {
+            date: g[0].dateannounced,               
+            confirmed: g.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length,
+            deceased: g.map(y => y.currentstatus).filter(y => y == 'Deceased').length,
+            recovered: g.map(y => y.currentstatus).filter(y => y == 'Recovered').length,
+            active:Math.abs(g.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length-(g.map(y => y.currentstatus).filter(y => y == 'Deceased').length+g.map(y => y.currentstatus).filter(y => y == 'Recovered').length))
+          }
+        }).value();
+
+        console.log('dated',dated);
         var cityData =_.chain(dataPiped).groupBy('detectedcity')
         .map(c=>{
           return{
@@ -167,7 +253,7 @@ export class ExampleDataSource extends DataSource<any> {
             active:Math.abs(c.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length-(c.map(y => y.currentstatus).filter(y => y == 'Deceased').length+c.map(y => y.currentstatus).filter(y => y == 'Recovered').length))
           }
         }).value();
-        console.log('CityData',cityData);
+        //console.log('CityData',cityData);
 
        
         districtData.forEach(t=>{
@@ -221,9 +307,9 @@ export class ExampleDataSource extends DataSource<any> {
           }
                   
         });  
-
-        
-        console.log(districtData);
+        datablock=(districtData);
+        dateblock=dated;
+        //console.log(districtData);
         this.covidData.next(districtData);
         
   })

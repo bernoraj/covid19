@@ -12,6 +12,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import{MatIconModule}from '@angular/material/icon'
+import { ChartsModule } from 'ng2-charts';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:"home"},
@@ -35,7 +36,8 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
-    MatIconModule
+    MatIconModule,
+    ChartsModule
   ],
   exports: [RouterModule],
   providers: [],

@@ -1,53 +1,90 @@
 
   main{ 
     display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px,1fr));
+    grid-template-columns: repeat(2, minmax(100px,1fr));
+    grid-template-rows: repeat(1, minmax(100px,1fr));
     
     svg{
         width:minmax(100px,20em);
         height:minmax(100px,20em); 
             
     }
-    .card{
-        //border:1px black solid;   
-        height: 15em;
-        align-content: center;  
+    
 
-        .header{
-            font-size: 1.2em;
-            font-weight: bold;
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
+    .sub-routine{
+      grid-template-rows: 1fr;
+      align-items: flex-start;
+      
+      .header{
+        font-size: minmax(1em,1.2em);
+        font-weight: bold;
+      }
+      .update{
+        font-size: 11px;
+        color: olivedrab;
+      }
+      
+      .stats{
+        grid-gap:1em;
+       
+        .text-stats{
+          font-size: x-small;          
+          padding-right:1em;
+          color: red;
         }
-        .content{  
-            padding-top: 2px;
-            font-size:0.7em;
-            font-family: fantasy;
-            
-        }
-       .stats{
-        
-           display: grid;
-           grid-template-columns: repeat(auto-fit, minmax(100px,1fr)); 
-           padding-top: 2px;   
-            
-           .confirmed{
-            font-size:0.75em;
-            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-           }     
-           
-           .death{
-            font-size:0.75em;
-            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-           
-           }
+      }
 
-           .recovered{
-            font-size:0.75em;
-            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-           
-           }
-       }
+      .stats-chart
+      {
+        // width: 75%;
+        // margin-left:-8em;
+        // border-color: fade-in($color: #000000, $amount: 0);
+        // border-bottom: rgb(167, 111, 42) 1px solid;
+      }
     }
+    // .card{
+    //     //border:1px black solid;
+    //     grid-template-rows: 1fr;
+    //     top:3em;               
+    //     height: 100%;         
+
+    //     .header{
+    //         font-size: 1.2em;
+    //         font-weight: bold;
+    //         font-family: Verdana, Geneva, Tahoma, sans-serif;
+    //     }
+    //     .content{  
+    //         padding-top: 2px;
+    //         font-size:0.7em;
+    //         font-family: fantasy;
+            
+    //     }
+    //    .stats{
+        
+    //        display: grid;
+    //        grid-template-columns: repeat(auto-fit, minmax(100px,1fr));           
+    //        padding-top: 2px; 
+    //        padding-bottom: 5px;  
+            
+    //        .confirmed{
+    //         font-size:0.75em;
+    //         font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    //        }     
+           
+    //        .death{
+    //         font-size:0.75em;
+    //         font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+           
+    //        }
+
+    //        .recovered{
+    //         font-size:0.75em;
+    //         font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+           
+    //        }
+    //    }
+      
+    // }
 }
 
 path{
@@ -61,6 +98,17 @@ path:hover{
     fill:darkred;
     stroke-width: 5px;
 }
+.groupedHover:hover{
+
+  path{
+    stroke:darkred; 
+    fill:darkred;
+    stroke-width: 5px;
+  }
+}
+
+
+
 
 .MasterTable{
   display: grid;
