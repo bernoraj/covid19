@@ -77,11 +77,11 @@ export class DashboardComponent implements OnInit {
    
   }
 
-  Stats(){
-
-    if(this.districtHeaderBlock!='TamilNadu' && datablock!=[])
+  Stats(districtHeaderBlock){
+    this.districtHeaderBlock=districtHeaderBlock;
+    if(districtHeaderBlock!='TamilNadu' && datablock!=[])
     {
-        var stats=datablock.filter(t=>t.district==this.districtHeaderBlock);
+        var stats=datablock.filter(t=>t.district==districtHeaderBlock);
         
         if(stats!=null && stats!=undefined && stats.length>0)
         {         
