@@ -23,6 +23,8 @@ import { MatSort } from '@angular/material/sort';
   ],
 })
 export class DashboardComponent implements OnInit {
+  hide='hidden';
+  show='unset';
   covidData;
   sortByConfirmed;
   sortByDeaths;
@@ -36,11 +38,28 @@ export class DashboardComponent implements OnInit {
   confirmedCount=0;
   deceasedCount=0;
   hospitalizedCount;
+  //dashboard
   districtHeaderBlock='TamilNadu';
+  dashConfirmedCount=0;
+  dashDeathCount=0;
+  dashRecoveredCount=0;
+
+  dashTodayConfirmedCount=0;
+  dashTodayDeathCount=0;
+  dashTodayRecoveredCount=0;
+
+  dashTodaysamples=0;
+  dashTodaynegatives=0;
+  dashTodayinprog=0;
+
+  dashTodayventillators=0;
+  dashTodaybeds=0;
+  dashTodaycenters=0;
+
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   //chart
-  lineChartData: ChartDataSets[] = [];
+  lineChartData: ChartDataSets[] = [{data:[1,2,3],label:'Confirmed'}];
 
   lineChartLabels: Label[] = [];
   
@@ -76,6 +95,25 @@ export class DashboardComponent implements OnInit {
     this.lineChartData=[{data:temp,label:'Confirmed'},{data:tempactive,label:'Recovered'}];
    
   }
+
+
+    Dashboard(){
+      if(dateblock.length>0)
+      {
+        var todayDate=new Date().toLocaleDateString();
+        var todaysData=dateblock.filter(x=>x.date==todayDate);
+
+        this.dashConfirmedCount=datablock.reduce(function(acc,dd){ return acc+dd.confirmed},0);
+        this.dashDeathCount=datablock.reduce(function(acc,dd){ return acc+dd.deceased},0);
+        this.dashRecoveredCount=datablock.reduce(function(acc,dd){ return acc+dd.recovered},0);
+        
+        this.dashTodayConfirmedCount=todaysData.reduce(function(acc,dd){return acc+dd.confirmed},0);
+        this.dashTodayDeathCount=todaysData.reduce(function(acc,dd){return acc+dd.deceased},0);
+        this.dashTodayRecoveredCount=todaysData.reduce(function(acc,dd){return acc+dd.recovered},0);
+
+      }      
+    }
+
 
   Stats(districtHeaderBlock){
     this.districtHeaderBlock=districtHeaderBlock;
@@ -113,8 +151,12 @@ export class DashboardComponent implements OnInit {
     this.dataSource.loadCovidData();
     //this.dataSource.sort = this.sort;
     setTimeout(() => { 
-      this.chartFun();     
-      this.chart.chart.update()
+      this.chartFun();  
+      this.Dashboard();
+      if(this.chart!=undefined){
+        this.chart.chart.update()
+      }   
+      
   }, 2000);
    
  
@@ -307,7 +349,7 @@ export class ExampleDataSource extends DataSource<any> {
         });  
         datablock=(districtData);
         dateblock=dated;
-        //console.log(districtData);
+        //console.log(datablock);
         this.covidData.next(districtData);
         
   })

@@ -245,10 +245,11 @@ h4.covid-title {
 
 .covid-item {  
   //background: #efefef;
+  justify-content: space-evenly;
   padding: 10px;
   margin-bottom: 10px;
   width: 270px;
-  height: 130px;
+  height: auto;
   box-shadow: 0px 3px 5px #dadada;  
   background-image: radial-gradient(circle at center center, rgba(217, 217, 217,0.05) 0%, rgba(217, 217, 217,0.05) 15%,rgba(197, 197, 197,0.05) 15%, rgba(197, 197, 197,0.05) 34%,rgba(178, 178, 178,0.05) 34%, rgba(178, 178, 178,0.05) 51%,rgba(237, 237, 237,0.05) 51%, rgba(237, 237, 237,0.05) 75%,rgba(138, 138, 138,0.05) 75%, rgba(138, 138, 138,0.05) 89%,rgba(158, 158, 158,0.05) 89%, rgba(158, 158, 158,0.05) 100%),radial-gradient(circle at center center, rgb(255,255,255) 0%, rgb(255,255,255) 6%,rgb(255,255,255) 6%, rgb(255,255,255) 12%,rgb(255,255,255) 12%, rgb(255,255,255) 31%,rgb(255,255,255) 31%, rgb(255,255,255) 92%,rgb(255,255,255) 92%, rgb(255,255,255) 97%,rgb(255,255,255) 97%, rgb(255,255,255) 100%); background-size: 42px 42px;
 }
@@ -309,16 +310,20 @@ h4.covid-title {
 }
 
 .covid-value {
+  display: flex;
   font-weight: bold;
   font-size: 22px;
   line-height: 25px;
-  text-align: center;
+  text-align: center;  
+  
 }
 
 .covid-label {
+  display: flex;
   font-size: 14px;
   line-height: 16px;
   text-align: center;
+  
 }
 
 h4.covid-title {
@@ -379,6 +384,15 @@ path:hover {
   }
 }
 
+.chartmap{
+
+  height: 70%;
+  width: 100%;
+  
+}
+
+
+
 @media screen and (max-width: 415px) {
 
 
@@ -433,7 +447,15 @@ main{
 
 //   }
 }
+.chartmap{
 
+  position: absolute;
+  height: 40vh;
+  width: 90%;
+  top:1025px;
+  
+  }
 
 
 }
+
