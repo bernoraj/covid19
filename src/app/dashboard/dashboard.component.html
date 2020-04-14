@@ -27,57 +27,81 @@
     </ul>
   </div>
 </nav>
+<br>
+
 
 <main>
   <div class="covid-grid">
     <div class="covid-item">
-      <h4 class="covid-title">India</h4>
-      <div class="covid-row">
-        <div class="covid-col covid-confirmed">
-          <div class="covid-value">25688</div>
-          <div class="covid-label">Confirmed</div>
-        </div>
-        <div class="covid-col covid-deaths">
-          <div class="covid-value">1138</div>
-          <div class="covid-label">Deaths</div>
-        </div>
-        <div class="covid-col covid-recovered">
-          <div class="covid-value">12700</div>
-          <div class="covid-label">Recovered</div>
-        </div>
-      </div>
-    </div>
- 
-
-  <div class="covid-item">
-    <h4 class="covid-title">TamilNadu</h4>
+    <h4 class="covid-title">TamilNadu <i class="fa fa-home"></i></h4>
     <div class="covid-row">
       <div class="covid-col covid-confirmed">
+        <div class="covid-increase-conf"><i class="fa fa-arrow-up"></i> 45</div>
         <div class="covid-value">25688</div>
         <div class="covid-label">Confirmed</div>
       </div>
       <div class="covid-col covid-deaths">
+        <div class="covid-increase-deat"><i class="fa fa-arrow-up"></i> 10</div>
         <div class="covid-value">1138</div>
         <div class="covid-label">Deaths</div>
       </div>
       <div class="covid-col covid-recovered">
+        <div class="covid-increase-rec"><i class="fa fa-arrow-up"></i> 12</div>
         <div class="covid-value">12700</div>
         <div class="covid-label">Recovered</div>
       </div>
     </div>
   </div>
-</div>
-  <div class="card w-75">
-    <div class="card-body">
-      <h2 class="card-title strong">{{ districtHeaderBlock }}</h2>
-      <div class="row">
-        <div class="col-md-2">Confirmed:{{ confirmedCount }}</div>
-        <div class="col-md-2">Death:{{ deceasedCount }}</div>
-        <div class="col-md-2">Recovered:{{ recoveredCount }}</div>
+
+  <div class="covid-item">  
+    <h4 class="covid-title">Test Details <i class="fa fa-flask"></i></h4>     
+    <div class="covid-row">
+      <div class="covid-col covid-samples">
+        <div class="covid-increase-samp"><i class="fa fa-arrow-up"></i> 55</div>
+        <div class="covid-value">12,746</div>
+        <div class="covid-label">Samples</div>
+      </div>
+      <div class="covid-col covid-negative">
+        <div class="covid-increase-neg"><i class="fa fa-arrow-up"></i> 12</div>
+        <div class="covid-value">10,437</div>
+        <div class="covid-label">Negative</div>
+      </div>
+      <div class="covid-col covid-progress">
+        <div class="covid-increase-inp"><i class="fa fa-arrow-up"></i> 4</div>
+        <div class="covid-value">1,136</div>
+        <div class="covid-label">In-Progress</div>
       </div>
     </div>
   </div>
 
+  <div class="covid-item">
+    <h4 class="covid-title">Facility <i class="fa fa-hospital-o"></i></h4>
+    <div class="covid-row">
+      <div class="covid-col covid-ventillator">
+        <div class="covid-increase-vent"><i class="fa fa-arrow-up"></i> 45</div>
+        <div class="covid-value">3,371</div>
+        <div class="covid-label">Ventilators</div>
+      </div>
+      <div class="covid-col covid-beds">
+        <div class="covid-increase-beds"><i class="fa fa-arrow-up"></i> 45</div>
+        <div class="covid-value">29,074</div>
+        <div class="covid-label">Iso-Beds</div>
+      </div>
+      <div class="covid-col covid-tc">
+        <div class="covid-increase-tc"><i class="fa fa-arrow-up"></i> 45</div>
+        <div class="covid-value">25</div>
+        <div class="covid-label">Test Center</div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<!-- Map starts -->
+<div class="mapsandstats">
+
+  <div class="mapofTN">
   <svg
     version="1.1"
     id="Layer_1"
@@ -316,8 +340,31 @@
       </g>
     </g>
   </svg>
+</div>
 
-  <div class="chart-wrapper">
+<div class="covid-map-stats">
+  <h4 class="covid-title">{{ districtHeaderBlock }} <i class="fa fa-map-marker"></i></h4>
+  <div class="covid-row">
+    <div class="covid-col covid-ventillator">
+      <div class="covid-increase-vent"><i class="fa fa-arrow-up"></i> 45</div>
+      <div class="covid-value">{{ confirmedCount }}</div>
+      <div class="covid-label">Confirmed</div>
+    </div>
+    <div class="covid-col covid-beds">
+      <div class="covid-increase-beds"><i class="fa fa-arrow-up"></i> 45</div>
+      <div class="covid-value">{{ deceasedCount }}</div>
+      <div class="covid-label">Death</div>
+    </div>
+    <div class="covid-col covid-tc">
+      <div class="covid-increase-tc"><i class="fa fa-arrow-up"></i> 45</div>
+      <div class="covid-value">{{ recoveredCount }}</div>
+      <div class="covid-label">Recovered</div>
+    </div>
+  </div>
+</div>
+
+</div>
+  <!-- <div class="chart-wrapper">
     <canvas
       baseChart
       [datasets]="lineChartData"
@@ -328,7 +375,7 @@
       [plugins]="lineChartPlugins"
     >
     </canvas>
-  </div>
+  </div> -->
 </main>
 
 <!-- <div class="MasterTable">

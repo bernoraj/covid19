@@ -236,21 +236,32 @@ h4.covid-title {
 
 .covid-grid{
 
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  display: grid ;  
+  grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+  grid-gap: 1em;
+  justify-items: center;
+  align-items: center;
 }
 
-.covid-item {
-  
-  background: #efefef;
+.covid-item {  
+  //background: #efefef;
   padding: 10px;
   margin-bottom: 10px;
-  box-shadow: 0px 3px 5px #dadada;
-  //background-image: url(../images/world.png);
-  background-repeat: no-repeat;
-  background-position: top 10px right 10px;
-  background-blend-mode: overlay;
-  background-size: 80px;
+  width: 270px;
+  height: 130px;
+  box-shadow: 0px 3px 5px #dadada;  
+  background-image: radial-gradient(circle at center center, rgba(217, 217, 217,0.05) 0%, rgba(217, 217, 217,0.05) 15%,rgba(197, 197, 197,0.05) 15%, rgba(197, 197, 197,0.05) 34%,rgba(178, 178, 178,0.05) 34%, rgba(178, 178, 178,0.05) 51%,rgba(237, 237, 237,0.05) 51%, rgba(237, 237, 237,0.05) 75%,rgba(138, 138, 138,0.05) 75%, rgba(138, 138, 138,0.05) 89%,rgba(158, 158, 158,0.05) 89%, rgba(158, 158, 158,0.05) 100%),radial-gradient(circle at center center, rgb(255,255,255) 0%, rgb(255,255,255) 6%,rgb(255,255,255) 6%, rgb(255,255,255) 12%,rgb(255,255,255) 12%, rgb(255,255,255) 31%,rgb(255,255,255) 31%, rgb(255,255,255) 92%,rgb(255,255,255) 92%, rgb(255,255,255) 97%,rgb(255,255,255) 97%, rgb(255,255,255) 100%); background-size: 42px 42px;
+}
+
+
+.covid-map-stats{
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 270px;
+  height: 130px;
+  box-shadow: 0px 3px 5px #dadada;  
+  background-image: repeating-linear-gradient(0deg, hsla(23,0%,86%,0.45) 0px, hsla(23,0%,86%,0.45) 1px,transparent 1px, transparent 36px),repeating-linear-gradient(90deg, hsla(23,0%,86%,0.45) 0px, hsla(23,0%,86%,0.45) 1px,transparent 1px, transparent 36px),linear-gradient(90deg, hsl(334,2%,100%),hsl(334,2%,100%));
+
 }
 
 .covid-row {
@@ -273,16 +284,41 @@ h4.covid-title {
 .covid-col.covid-deaths {
   color: #494949;
 }
+.covid-col.covid-samples{
+  color:rgba(56, 59, 247, 0.651)
+}
+
+.covid-col.covid-negative{
+  color:rgba(3, 71, 3, 0.651)
+}
+
+.covid-col.covid-progress{
+  color:rgba(248, 80, 220, 0.877)
+}
+
+.covid-col.covid-ventillator{
+  color:rgba(0, 128, 0, 0.774)
+}
+
+.covid-col.covid-beds{
+  color:rgba(44, 59, 44, 0.774)
+}
+
+.covid-col.covid-tc{
+  color:rgba(216, 7, 94, 0.664)
+}
 
 .covid-value {
   font-weight: bold;
   font-size: 22px;
   line-height: 25px;
+  text-align: center;
 }
 
 .covid-label {
   font-size: 14px;
   line-height: 16px;
+  text-align: center;
 }
 
 h4.covid-title {
@@ -290,6 +326,20 @@ h4.covid-title {
   margin-bottom: 10px;
   font-size: 25px;
   line-height: 28px;
+  
+}
+
+
+
+.mapsandstats{
+
+  display: grid;
+  grid-template-columns: repeat(2,minmax(280px,1fr));
+  grid-gap: 1em;
+  //align-items:flex-start;  
+  justify-content: center;
+  margin: 0;
+
 }
 
 
@@ -302,8 +352,8 @@ main{
 //SVG Map
   svg {
     width: 100%;
-    height: 100%;
-    
+    height: 100%;    
+
     path {
       fill: darkseagreen;
       stroke: rgb(252, 252, 252);
