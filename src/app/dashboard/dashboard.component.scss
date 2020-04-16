@@ -224,6 +224,11 @@
 //   }
 // }
 
+.navbar{
+
+  background-image: repeating-linear-gradient(90deg, hsla(298,16%,68%,0.06) 0px, hsla(298,16%,68%,0.06) 1px,transparent 1px, transparent 21px,hsla(298,16%,68%,0.06) 21px, hsla(298,16%,68%,0.06) 22px,transparent 22px, transparent 72px),repeating-linear-gradient(0deg, hsla(298,16%,68%,0.06) 0px, hsla(298,16%,68%,0.06) 1px,transparent 1px, transparent 21px,hsla(298,16%,68%,0.06) 21px, hsla(298,16%,68%,0.06) 22px,transparent 22px, transparent 72px),repeating-linear-gradient(135deg, hsla(298,16%,68%,0.06) 0px, hsla(298,16%,68%,0.06) 1px,transparent 1px, transparent 21px,hsla(298,16%,68%,0.06) 21px, hsla(298,16%,68%,0.06) 22px,transparent 22px, transparent 72px),linear-gradient(90deg, hsl(275,3%,97%),hsl(275,3%,97%));
+}
+
 h4.covid-title {
   margin: 0;
   margin-bottom: 10px;
@@ -354,6 +359,23 @@ h4.covid-title {
   //grid-column: 1 / 4;
   grid-row: 2 / 3;
  margin-left: 5em;
+
+ a{
+  path {
+    //fill: darkseagreen;
+    stroke: rgb(252, 252, 252);
+    stroke-width: 1px;
+    transition: fill 3s ease-out
+  }
+  path:hover {
+    stroke:#270100;
+    //fill: darkred;
+    stroke-width: 3px;
+    
+  }
+
+ } 
+ 
 }
 
 .covid-map-stats{
@@ -361,24 +383,11 @@ h4.covid-title {
   grid-area: right;
  // grid-column: 4 / 5;
   grid-row: 2 / 3; 
+  //height: 150px;
 }
 
 
- a{
-  path {
-    fill: darkseagreen;
-    stroke: rgb(252, 252, 252);
-    stroke-width: 1px;
-    transition: fill 0.3ms; 
-  }
-  path:hover {
-    stroke: darkred;
-    fill: darkred;
-    stroke-width: 5px;
-    
-  }
-
- } 
+ 
 
 // .groupedHover:hover {
 //   path {
@@ -406,17 +415,19 @@ main{
     
     a{
       path {
-        fill: darkseagreen;
+        //fill: darkseagreen;
         stroke: rgb(252, 252, 252);
         stroke-width: 1px;
         transition: fill 0.3ms; 
       }
       path:hover {
-        stroke: darkred;
-        fill: darkred;
-        //stroke-width: 5px;
+        stroke:#270100;
+        //fill: darkred;
+        stroke-width: 3px;
+        
       }
-    }
+    
+     } 
    
     // .groupedHover:hover {
     //   path {
