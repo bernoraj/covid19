@@ -61,6 +61,7 @@ export class DashboardComponent implements OnInit {
   dashTodaysamples=0;
   dashTodaynegatives=0;
   dashTodayinprog=0;
+  flagTodayProg=true;
 
   dashTodayventillators=0;
   dashTodaybeds=0;
@@ -171,6 +172,7 @@ export class DashboardComponent implements OnInit {
           this.dashTodaysamples=(latest.samples>0)?Math.abs(latest.samples-previous.samples):this.dashTodaysamples;
           this.dashTodaynegatives=(latest.negatives>0)?Math.abs(latest.negatives-previous.negatives):this.dashTodaynegatives;
           this.dashTodayinprog=(latest.ongoing>0)?Math.abs(latest.ongoing-previous.ongoing):this.dashTodayinprog
+          this.flagTodayProg=(latest.ongoing>previous.ongoing)?true:false;
           this.dashTodayventillators=(latest.ventilators>0)?Math.abs(latest.ventilators-previous.ventilators):this.dashTodayventillators;
           this.dashTodaybeds=(latest.beds>0)?Math.abs(latest.beds-previous.beds):this.dashTodaybeds;
           this.dashTodaycenters=(latest.centers>0)?Math.abs(latest.centers-previous.centers): this.dashTodaycenters;          

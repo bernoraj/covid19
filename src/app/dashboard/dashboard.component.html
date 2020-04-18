@@ -99,11 +99,12 @@
           <div class="covid-label">Negative</div>
         </div>
         <div class="covid-col covid-progress">
-          <div
+          <div [ngSwitch]="dashTodayinprog != 0"
             class="covid-increase-inp"
             [ngStyle]="{ visibility: dashTodayinprog != 0 ? show : hide }"
           >
-            <i class="fa fa-arrow-up"></i> {{ dashTodayinprog }}
+            <i *ngSwitchCase="flagTodayProg==true" class="fa fa-arrow-up"></i>
+            <i *ngSwitchCase="flagTodayProg==false" class="fa fa-arrow-down"></i> {{ dashTodayinprog }}
           </div>
           <div class="covid-value">{{dashInprog | number}}</div>
           <div class="covid-label">Ongoing</div>
