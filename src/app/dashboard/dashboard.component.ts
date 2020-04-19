@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild,AfterViewInit, OnDestroy } from '@angular/core';
 import { DashboardService } from '../dashboard.service'
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DataSource, CollectionViewer } from '@angular/cdk/collections';
@@ -9,6 +9,8 @@ import { ChartDataSets } from 'chart.js';
 import { Color, Label,BaseChartDirective} from 'ng2-charts';
 import { MatSort } from '@angular/material/sort';
 import * as moment from 'moment';
+import * as d3 from 'd3';
+import {miserables} from './miserables'
 
 @Component({
   selector: 'app-dashboard',
@@ -22,7 +24,15 @@ import * as moment from 'moment';
     ]),
   ],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit,AfterViewInit, OnDestroy {
+  svg:any;
+  color:any;
+  simulation:any;
+  link:any;
+  node:any;
+  d3FinalData;
+
+
   hide='hidden';
   show='unset';
   covidData;
@@ -161,17 +171,50 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
-  //   this.dashboardService.getpatientdetails().subscribe(data=>{
-  //     this.chartData=_.chain(data).groupBy('dateannounced').map(g=>{
-  //       return {
-  //         date: g[0].dateannounced,               
-  //         confirmed: g.map(y => y.Status).filter(y => y == 'Active').length,
-  //         deceased: g.map(y => y.Status).filter(y => y == 'Dead').length,
-  //         recovered: g.map(y => y.Status).filter(y => y == 'Recovered').length,
+    this.dashboardService.getpatientdetails().subscribe(data=>{
+
+      var d3Data=_.chain(data).groupBy('to')
+      .map(d=>{
+        return {
+          hotspot:d[0].to,
+          patientDetails:_.chain(d).groupBy('district').map(t=>{return {district:t[0].district,patientID:t.map(t=>t.patientID)}}).value()
          
-  //       }
-  //   }).value();
-  // });
+        }
+      }).value();
+
+      var nodes=[];
+      //{"id": "P178", "group": 1},
+      var links=[];
+      // {"source":"P264","target":"Delhi","value":2},
+
+
+      d3Data.forEach((x,i)=>{
+        if(x.hotspot!=""){
+        var tempHotspot={"id":x.hotspot,"group":i,"district":x.hotspot};
+        nodes.push(tempHotspot);
+
+        var j=d3Data.length+1;
+        x.patientDetails.forEach((pat) => {
+          
+          pat.patientID.forEach((id)=>{
+
+            var tempPatient={"id":id,"group":j,"district":"Patient ("+id+") from "+pat.district};
+            nodes.push(tempPatient);
+            var tempPatientLinks={"source":id,"target":x.hotspot,"value":2};
+            links.push(tempPatientLinks);
+
+          });
+          j=j+1;
+        });
+
+      }
+      });
+
+      this.d3FinalData={"nodes":nodes,"links":links};      
+      this.d3loadfunction();
+    
+    
+  });
 
   this.dashboardService.getTNStats().subscribe(data=>{
     this.dateblock=_.chain(data).groupBy('dateannounced')
@@ -384,9 +427,116 @@ export class DashboardComponent implements OnInit {
 
 
     // });
-  
+     
 
   }
+
+  ngAfterViewInit(){
+  
+  }
+  
+  d3loadfunction(){
+    this.svg = d3.select("svg#force")
+    .attr("viewBox", "0 0 " + '960' + " " + '600')
+    .attr("preserveAspectRatio", "xMidYMid meet");
+
+
+    var width = +this.svg.attr("width"),
+    height = +this.svg.attr("height");
+
+
+    this.color = d3.scaleOrdinal(d3.schemeCategory10);
+
+    this.simulation = d3.forceSimulation()
+    .force("link", d3.forceLink().id(function(d:any) { return d.id; }))
+    .force("charge", d3.forceManyBody())
+    .force("center", d3.forceCenter(width/2 , height/2 ))
+    .force('x', d3.forceX().x(function(d) {
+      return -100;
+    }))
+    .force('y', d3.forceY().y(function(d) {
+      return -100;
+    }));  
+      
+    this.render(this.d3FinalData);
+  }
+
+
+  ticked() {
+    this.link
+        .attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+
+    this.node
+        .attr("cx", function(d) { return d.x= Math.max(5, Math.min(960 - 5, d.x));; })
+        .attr("cy", function(d) { return d.y= Math.max(5, Math.min(500 - 5, d.y)); ; });
+  }
+  
+  render(graph){
+    this.link = this.svg.append("g")
+    .attr("class", "links")
+    .selectAll("line")
+    .data(graph.links)
+    .enter().append("line")
+      .attr("stroke", "black")
+      .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
+
+    var div = d3.select("#text");
+
+    this.node = this.svg.append("g")
+    .attr("class", "nodes")
+    .selectAll("circle")
+    .data(graph.nodes)
+    .enter().append("circle")
+      .attr("pointer-events", "all")      
+      .on("mouseover", function(d){ return  div.html(d.group);})
+      .attr("r", 5)
+      .attr("fill", (d)=> { return this.color(d.group); })     
+      .call(d3.drag()
+          .on("start", (d)=>{return this.dragstarted(d)})
+          .on("drag", (d)=>{return this.dragged(d)})
+          .on("end", (d)=>{return this.dragended(d)}));
+
+    this.node.append("title")
+      .text(function(d) {        
+          return d.district;        
+      });
+
+    this.simulation
+      .nodes(graph.nodes)
+      .on("tick", ()=>{return this.ticked()});
+
+    this.simulation.force("link")
+      .links(graph.links);  
+  }
+  
+  dragged(d) {
+    d.fx = d3.event.x;
+    d.fy = d3.event.y;
+  }
+  
+  dragended(d) {
+    if (!d3.event.active) this.simulation.alphaTarget(0);
+    d.fx = null;
+    d.fy = null;
+  }
+  
+  dragstarted(d) {
+    if (!d3.event.active) this.simulation.alphaTarget(0.3).restart();
+    d.fx = d.x;
+    d.fy = d.y;
+  }
+
+  ngOnDestroy(){
+    
+  }
+
+
+
+
+
 
   SVGTemplate(){
 

@@ -31,9 +31,9 @@
     </ul>
   </div>
 </nav>
-<br />
+<!-- <br />
 <span class="dashboarddate">Last Updated : {{dashboardupdatedDate}} </span>
-<br />
+<br /> -->
 <main>  
   <div class="covid-grid">
     <div class="covid-item">
@@ -214,7 +214,8 @@
 
   </div>
 </main>
-<br>
+
+<div class="canvasObjects">
 <div class="chart-wrapper chartmap">
   <h2>Spread Pattern:</h2>
   <canvas
@@ -229,4 +230,8 @@
   </canvas>
 </div>
 
-
+<div class="network">
+<!-- <div id="text"></div> -->
+<svg id="force" width="745" height="600"></svg>
+</div>
+</div>

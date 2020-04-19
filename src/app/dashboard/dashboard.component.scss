@@ -224,6 +224,19 @@
 //   }
 // }
 
+circle {
+  cursor: pointer;
+  transition: fill 1s ease-out;
+  }
+
+// .canvasObjects{
+  
+//   display: grid;
+//   grid-template-columns: 1fr;
+//   grid-template-rows: 1fr;
+  
+// }
+
 .navbar{
 
   background-image: repeating-linear-gradient(90deg, hsla(298,16%,68%,0.06) 0px, hsla(298,16%,68%,0.06) 1px,transparent 1px, transparent 21px,hsla(298,16%,68%,0.06) 21px, hsla(298,16%,68%,0.06) 22px,transparent 22px, transparent 72px),repeating-linear-gradient(0deg, hsla(298,16%,68%,0.06) 0px, hsla(298,16%,68%,0.06) 1px,transparent 1px, transparent 21px,hsla(298,16%,68%,0.06) 21px, hsla(298,16%,68%,0.06) 22px,transparent 22px, transparent 72px),repeating-linear-gradient(135deg, hsla(298,16%,68%,0.06) 0px, hsla(298,16%,68%,0.06) 1px,transparent 1px, transparent 21px,hsla(298,16%,68%,0.06) 21px, hsla(298,16%,68%,0.06) 22px,transparent 22px, transparent 72px),linear-gradient(90deg, hsl(275,3%,97%),hsl(275,3%,97%));
