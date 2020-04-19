@@ -14,9 +14,9 @@ import {BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import{MatIconModule}from '@angular/material/icon'
 import { ChartsModule } from 'ng2-charts';
 
-const routes: Routes = [
-  {path:  "", pathMatch:  "full",redirectTo:"home"},
-  {path: "home", component: DashboardComponent}
+const routes: Routes = [ 
+  {path: "", component: DashboardComponent},
+  // {path: "/", pathMatch:  "full",redirectTo:""}
 ];
 @NgModule({
 

@@ -8,7 +8,7 @@ import { finalize, catchError } from 'rxjs/operators';
 import { ChartDataSets } from 'chart.js';
 import { Color, Label,BaseChartDirective} from 'ng2-charts';
 import { MatSort } from '@angular/material/sort';
-
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-dashboard',
@@ -53,6 +53,7 @@ export class DashboardComponent implements OnInit {
   dashBeds=0;
   dashCenters=0;
 
+  dashboardupdatedDate;
   //todays counts
   dashTodayConfirmedCount=0;
   dashTodayDeathCount=0;
@@ -75,6 +76,10 @@ export class DashboardComponent implements OnInit {
   datablock=[]
   previousdatablock=[];
 
+  //chart
+  chartData=[];
+  dateblock=[];
+
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   //chart
@@ -90,13 +95,9 @@ export class DashboardComponent implements OnInit {
 
   lineChartColors: Color[] = [
     {
-      borderColor: 'rgb(255,0,0)',
-      backgroundColor: 'white',
-    }, 
-    {
-      borderColor: 'green',
-      backgroundColor: 'white',
-    }
+      borderColor: '#fc5c65',
+      backgroundColor: '#b71540',
+    }    
   ];
   
   lineChartPlugins = [];
@@ -105,13 +106,20 @@ export class DashboardComponent implements OnInit {
   chartFun()
   {
     var temp=[];
-    var tempactive=[];
-    dateblock.forEach(t=>{     
-      this.lineChartLabels.push(t.date);
+    //var tempactive=[];
+    this.dateblock.forEach(t=>{   
+      var newformatdate=moment(t.date,"DD/MM/YYYY").format("DD MMM")  
+      this.lineChartLabels.push(newformatdate);
       temp.push(t.confirmed);
-      tempactive.push(t.recovered);
+     // tempactive.push(t.recovered);
     }); 
-    this.lineChartData=[{data:temp,label:'Confirmed'},{data:tempactive,label:'Recovered'}];
+    // this.chartData.forEach(t=>{
+    //   this.lineChartLabels.push(t.date);
+    //   temp.push(t.confirmed);
+    //   tempactive.push(t.recovered);
+    // });
+    //{data:tempactive,label:'Recovered'}
+    this.lineChartData=[{data:temp,label:'Confirmed'}];
    
   }
 
@@ -144,14 +152,44 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  displayedColumns = ['district', 'confirmed','active','recovered','deceased'];
-  dataSource:ExampleDataSource;
-  expandedElement: any;
+  //displayedColumns = ['district', 'confirmed','active','recovered','deceased'];
+ // dataSource:ExampleDataSource;
+  //expandedElement: any;
 
   
-  constructor(private dashboardService: DashboardService) { }
+  constructor(private dashboardService: DashboardService) {  }
 
   ngOnInit(): void {
+
+  //   this.dashboardService.getpatientdetails().subscribe(data=>{
+  //     this.chartData=_.chain(data).groupBy('dateannounced').map(g=>{
+  //       return {
+  //         date: g[0].dateannounced,               
+  //         confirmed: g.map(y => y.Status).filter(y => y == 'Active').length,
+  //         deceased: g.map(y => y.Status).filter(y => y == 'Dead').length,
+  //         recovered: g.map(y => y.Status).filter(y => y == 'Recovered').length,
+         
+  //       }
+  //   }).value();
+  // });
+
+  this.dashboardService.getTNStats().subscribe(data=>{
+    this.dateblock=_.chain(data).groupBy('dateannounced')
+    .map(g => {
+      return {
+        date: g[0].dateannounced,               
+        confirmed: g.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length,
+        deceased: g.map(y => y.currentstatus).filter(y => y == 'Deceased').length,
+        recovered: g.map(y => y.currentstatus).filter(y => y == 'Recovered').length,
+        active:Math.abs(g.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length-(g.map(y => y.currentstatus).filter(y => y == 'Deceased').length+g.map(y => y.currentstatus).filter(y => y == 'Recovered').length))
+      }
+    }).value();
+    this.chartFun();   
+    this.chart.chart.update();
+  });
+
+
+
 
     this.dashboardService.getDashboard().subscribe(data=>{
       //dashboard Misc
@@ -167,7 +205,11 @@ export class DashboardComponent implements OnInit {
         this.dashBeds=latest.beds;
         this.dashCenters=latest.centers;
 
-        if(sorted.length>1){
+        var latestDate=moment(latest.updateddate,"DD/MM/YYYY").format("DD/MM/YYYY");    
+        var todaysDate=moment().format("DD/MM/YYYY");
+       
+      
+        if(sorted.length>1 && latestDate==todaysDate){
           var previous=sorted[sorted.length-2];
           this.dashTodaysamples=(latest.samples>0)?Math.abs(latest.samples-previous.samples):this.dashTodaysamples;
           this.dashTodaynegatives=(latest.negatives>0)?Math.abs(latest.negatives-previous.negatives):this.dashTodaynegatives;
@@ -186,9 +228,13 @@ export class DashboardComponent implements OnInit {
      
       if(data!=null && data.length>0)
       {
-      var datedData=_.orderBy(data,['date']);      
+      //var datedData=_.orderBy(data,['date']);      
+      var datedData=_.sortBy(data,function(dateObj) {
+        return new Date(dateObj.date);
+      });
+     // console.log('datedData',datedData); 
       this.datablock=datedData[datedData.length-1].districtData;
-
+      this.chartData=datedData;
       
 
       //dashboard TN
@@ -197,7 +243,47 @@ export class DashboardComponent implements OnInit {
       this.dashDeathCount=latestdata.death;
       this.dashRecoveredCount=latestdata.recovered;
 
-      if(datedData.length>1)
+      var todaysDate=moment().format("DD-MMM-YYYY");
+
+      var temp1=latestdata.date +" "+latestdata.time;
+     
+      var latestDateandTime=moment(temp1,"DD-MMM-YYYY hh:mm A").format("MM-DD-YYYY hh:mm A").toString(); 
+
+      var latestDateandTimeFirefox=moment(temp1,"DD-MMM-YYYY hh:mm A").format("MM/DD/YYYY hh:mm A").toString();     
+
+
+    //Date Manipulation
+     var latestRecordDate=new Date(latestDateandTimeFirefox);
+      var Todaysdate=new Date();
+      var diff=+(Todaysdate)-(+latestRecordDate);     
+      
+      var diffS = diff / 1000; 
+      var diffM = diffS / 60; 
+      var diffH =Math.ceil(diffM / 60);  
+      var diffD =Math.ceil(diffH / 24);
+      
+  
+      
+     
+      if(diffH>24)
+      {
+        if(diffD==1){
+          this.dashboardupdatedDate=diffD+" "+ "Day Ago"
+        }
+        else{
+          this.dashboardupdatedDate=diffD+" "+ "Days Ago"
+        }        
+      }else{
+
+         if(diffH==1){
+          this.dashboardupdatedDate=diffH+" "+ "Hour Ago"
+        }
+        else{
+          this.dashboardupdatedDate=diffH+" "+ "Hours Ago"
+        }
+      }
+      
+      if(datedData.length>1 && latestdata.date==todaysDate) 
       { var previousdata=datedData[datedData.length-2];
         this.previousdatablock=previousdata.districtData;
         var cumulative=previousdata.districtData.reduce(function(acc,dd){ return acc+dd.confirmed},0);
@@ -244,15 +330,9 @@ export class DashboardComponent implements OnInit {
     }
     });
 
-    this.dataSource = new ExampleDataSource(this.dashboardService);
-    this.dataSource.loadCovidData();    
-    setTimeout(() => { 
-      this.chartFun();     
-      if(this.chart!=undefined){
-        this.chart.chart.update()
-      }   
-      
-    }, 2000);
+    //this.dataSource = new ExampleDataSource(this.dashboardService);
+    //this.dataSource.loadCovidData();    
+    
     
     
     //console.log(this.dataSource);
@@ -356,145 +436,145 @@ export class DashboardComponent implements OnInit {
 
 }
 
-let dateblock=[];
+//let dateblock=[];
 
 
 
 
-export interface districtElement {
-  district: string;
-  city: Array<any>[];
-  confirmed: number;
-  deceased:number;
-  recovered: number;
-  active:number;
-}
+// export interface districtElement {
+//   district: string;
+//   city: Array<any>[];
+//   confirmed: number;
+//   deceased:number;
+//   recovered: number;
+//   active:number;
+// }
 
-export class ExampleDataSource extends DataSource<any> {
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
-  private covidData = new BehaviorSubject<districtElement[]>([]);
-  private loadingCovidData = new BehaviorSubject<boolean>(false);
+// export class ExampleDataSource extends DataSource<any> {
+//   /** Connect function called by the table to retrieve one stream containing the data to render. */
+//   private covidData = new BehaviorSubject<districtElement[]>([]);
+//   private loadingCovidData = new BehaviorSubject<boolean>(false);
 
-  public loading$ = this.loadingCovidData.asObservable();
+//   public loading$ = this.loadingCovidData.asObservable();
 
 
-  constructor(private dashboardService: DashboardService) {
-    super();
-  }
+//   constructor(private dashboardService: DashboardService) {
+//     super();
+//   }
  
-  connect(collectionViewer: CollectionViewer): Observable<districtElement[]> {
-    return this.covidData.asObservable();  
-  }
+//   connect(collectionViewer: CollectionViewer): Observable<districtElement[]> {
+//     return this.covidData.asObservable();  
+//   }
 
-  disconnect(collectionViewer: CollectionViewer) { 
-    this.covidData.complete();
-    this.loadingCovidData.complete();
-  }
+//   disconnect(collectionViewer: CollectionViewer) { 
+//     this.covidData.complete();
+//     this.loadingCovidData.complete();
+//   }
 
-  loadCovidData()
-  {
-    this.loadingCovidData.next(true);
+//   loadCovidData()
+//   {
+//     this.loadingCovidData.next(true);
 
 
-    this.dashboardService.getTNStats().pipe(
-      catchError(() => of([])),
-      finalize(() => this.loadingCovidData.next(false))
-  )
-  .subscribe(dataPiped => {
-      console.log(dataPiped);
+//     this.dashboardService.getTNStats().pipe(
+//       catchError(() => of([])),
+//       finalize(() => this.loadingCovidData.next(false))
+//   )
+//   .subscribe(dataPiped => {
+      // console.log(dataPiped);
 
-      var districtData = _.chain(dataPiped).groupBy('detecteddistrict')
-        .map(g => {
-          return {
-            district: g[0].detecteddistrict,
-            city: _.uniqBy(g, 'detectedcity').map(x => x.detectedcity).filter(t => t != "" && t != g[0].detecteddistrict),
-            confirmed: g.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length,
-            deceased: g.map(y => y.currentstatus).filter(y => y == 'Deceased').length,
-            recovered: g.map(y => y.currentstatus).filter(y => y == 'Recovered').length,
-            active:Math.abs(g.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length-(g.map(y => y.currentstatus).filter(y => y == 'Deceased').length+g.map(y => y.currentstatus).filter(y => y == 'Recovered').length))
-          }
-        }).value();
+      // var districtData = _.chain(dataPiped).groupBy('detecteddistrict')
+      //   .map(g => {
+      //     return {
+      //       district: g[0].detecteddistrict,
+      //       city: _.uniqBy(g, 'detectedcity').map(x => x.detectedcity).filter(t => t != "" && t != g[0].detecteddistrict),
+      //       confirmed: g.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length,
+      //       deceased: g.map(y => y.currentstatus).filter(y => y == 'Deceased').length,
+      //       recovered: g.map(y => y.currentstatus).filter(y => y == 'Recovered').length,
+      //       active:Math.abs(g.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length-(g.map(y => y.currentstatus).filter(y => y == 'Deceased').length+g.map(y => y.currentstatus).filter(y => y == 'Recovered').length))
+      //     }
+      //   }).value();
         
-        var dated=_.chain(dataPiped).groupBy('dateannounced')
-        .map(g => {
-          return {
-            date: g[0].dateannounced,               
-            confirmed: g.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length,
-            deceased: g.map(y => y.currentstatus).filter(y => y == 'Deceased').length,
-            recovered: g.map(y => y.currentstatus).filter(y => y == 'Recovered').length,
-            active:Math.abs(g.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length-(g.map(y => y.currentstatus).filter(y => y == 'Deceased').length+g.map(y => y.currentstatus).filter(y => y == 'Recovered').length))
-          }
-        }).value();
+        // var dated=_.chain(dataPiped).groupBy('dateannounced')
+        // .map(g => {
+        //   return {
+        //     date: g[0].dateannounced,               
+        //     confirmed: g.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length,
+        //     deceased: g.map(y => y.currentstatus).filter(y => y == 'Deceased').length,
+        //     recovered: g.map(y => y.currentstatus).filter(y => y == 'Recovered').length,
+        //     active:Math.abs(g.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length-(g.map(y => y.currentstatus).filter(y => y == 'Deceased').length+g.map(y => y.currentstatus).filter(y => y == 'Recovered').length))
+        //   }
+        // }).value();
 
        // console.log('dated',dated);
-        var cityData =_.chain(dataPiped).groupBy('detectedcity')
-        .map(c=>{
-          return{
-            cityName:c[0].detectedcity,
-            confirmed: c.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length,
-            deceased: c.map(y => y.currentstatus).filter(y => y == 'Deceased').length,
-            recovered: c.map(y => y.currentstatus).filter(y => y == 'Recovered').length,
-            active:Math.abs(c.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length-(c.map(y => y.currentstatus).filter(y => y == 'Deceased').length+c.map(y => y.currentstatus).filter(y => y == 'Recovered').length))
-          }
-        }).value();
+        // var cityData =_.chain(dataPiped).groupBy('detectedcity')
+        // .map(c=>{
+        //   return{
+        //     cityName:c[0].detectedcity,
+        //     confirmed: c.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length,
+        //     deceased: c.map(y => y.currentstatus).filter(y => y == 'Deceased').length,
+        //     recovered: c.map(y => y.currentstatus).filter(y => y == 'Recovered').length,
+        //     active:Math.abs(c.map(y => y.currentstatus).filter(y => y == 'Hospitalized').length-(c.map(y => y.currentstatus).filter(y => y == 'Deceased').length+c.map(y => y.currentstatus).filter(y => y == 'Recovered').length))
+        //   }
+        // }).value();
         //console.log('CityData',cityData);
 
        
-        districtData.forEach(t=>{
-          var cityDataTable=[];
-          t.city.forEach(c=>{
-            var temp=cityData.filter(x=>x.cityName==c);
-            cityDataTable.push(temp[0]);
+        // districtData.forEach(t=>{
+        //   var cityDataTable=[];
+        //   t.city.forEach(c=>{
+        //     var temp=cityData.filter(x=>x.cityName==c);
+        //     cityDataTable.push(temp[0]);
             
-          })  
+        //   })  
 
           //init
-          var check=0;
+         // var check=0;
           //find sum of hospitalized,deceased,confirmed
-          var confirmedCount=  cityDataTable.reduce(function(acc,dd){ return acc+dd.confirmed},0);
-          var deceasedCount= cityDataTable.reduce(function(acc,dd){ return acc+dd.deceased},0);
-          var recoveredCount= cityDataTable.reduce(function(acc,dd){ return acc+dd.recovered},0);
-          var activeCount= cityDataTable.reduce(function(acc,dd){ return acc+dd.active},0);
+          // var confirmedCount=  cityDataTable.reduce(function(acc,dd){ return acc+dd.confirmed},0);
+          // var deceasedCount= cityDataTable.reduce(function(acc,dd){ return acc+dd.deceased},0);
+          // var recoveredCount= cityDataTable.reduce(function(acc,dd){ return acc+dd.recovered},0);
+          // var activeCount= cityDataTable.reduce(function(acc,dd){ return acc+dd.active},0);
 
-          var unknown={cityName:'Unknown',confirmed:0,active:0,deceased:0,recovered:0};
-          if(confirmedCount!=t.confirmed)
-          {
-            check=1;
-            unknown.confirmed=Math.abs(t.confirmed-confirmedCount);
-          }
-          if(activeCount!=t.active)
-          {
-            check=1;
-            unknown.active=Math.abs(t.active-activeCount);
-          }
+          // var unknown={cityName:'Unknown',confirmed:0,active:0,deceased:0,recovered:0};
+          // if(confirmedCount!=t.confirmed)
+          // {
+          //   check=1;
+          //   unknown.confirmed=Math.abs(t.confirmed-confirmedCount);
+          // }
+          // if(activeCount!=t.active)
+          // {
+          //   check=1;
+          //   unknown.active=Math.abs(t.active-activeCount);
+          // }
 
 
-          if(deceasedCount!=t.deceased)
-          {
-            check=1;
-            unknown.deceased=Math.abs(t.deceased-deceasedCount);
-          }
+          // if(deceasedCount!=t.deceased)
+          // {
+          //   check=1;
+          //   unknown.deceased=Math.abs(t.deceased-deceasedCount);
+          // }
 
-          if(recoveredCount!=t.recovered)
-          {
-            check=1;
-            unknown.recovered=Math.abs(t.recovered-recoveredCount);
-          }
+          // if(recoveredCount!=t.recovered)
+          // {
+          //   check=1;
+          //   unknown.recovered=Math.abs(t.recovered-recoveredCount);
+          // }
 
-          if(check==1)
-          {
-            cityDataTable.push(unknown);
-            t.city=(cityDataTable);  
-          }
-          else{
-            t.city=(cityDataTable); 
-          }
+          // if(check==1)
+          // {
+          //   cityDataTable.push(unknown);
+          //   t.city=(cityDataTable);  
+          // }
+          // else{
+          //   t.city=(cityDataTable); 
+          // }
                   
-        });  
+        //});  
      
-        dateblock=dated;       
-        this.covidData.next(districtData);
+        //dateblock=dated;       
+       // this.covidData.next(districtData);
         
-  })
-  }
-}
+//   })
+//   }
+// }

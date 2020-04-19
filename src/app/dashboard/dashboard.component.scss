@@ -229,6 +229,17 @@
   background-image: repeating-linear-gradient(90deg, hsla(298,16%,68%,0.06) 0px, hsla(298,16%,68%,0.06) 1px,transparent 1px, transparent 21px,hsla(298,16%,68%,0.06) 21px, hsla(298,16%,68%,0.06) 22px,transparent 22px, transparent 72px),repeating-linear-gradient(0deg, hsla(298,16%,68%,0.06) 0px, hsla(298,16%,68%,0.06) 1px,transparent 1px, transparent 21px,hsla(298,16%,68%,0.06) 21px, hsla(298,16%,68%,0.06) 22px,transparent 22px, transparent 72px),repeating-linear-gradient(135deg, hsla(298,16%,68%,0.06) 0px, hsla(298,16%,68%,0.06) 1px,transparent 1px, transparent 21px,hsla(298,16%,68%,0.06) 21px, hsla(298,16%,68%,0.06) 22px,transparent 22px, transparent 72px),linear-gradient(90deg, hsl(275,3%,97%),hsl(275,3%,97%));
 }
 
+.dashboarddate{
+  display: flex;
+  position: relative;
+  left:67em;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 25px;
+  text-align: center;  
+  color:#16a085;
+}
+
 h4.covid-title {
   margin: 0;
   margin-bottom: 10px;
@@ -411,6 +422,18 @@ h4.covid-title {
 
 @media screen and (max-width: 415px) {
 
+
+.dashboarddate{
+  display: flex;
+  position: relative;
+  width: 200px;
+  left:13em;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 25px;
+  text-align: center;  
+  color:#16a085;
+}
 
 main{
 //SVG Map

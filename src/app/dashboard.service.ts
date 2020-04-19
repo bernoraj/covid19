@@ -36,5 +36,12 @@ export class DashboardService {
     .pipe(map((res: Response) => res.json()));
   }
 
+  getpatientdetails(){
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });    
+    return this.http.get('/api/v1/patient', options )
+    .pipe(map((res: Response) => res.json()));
+  }
+
   constructor(private http: Http) { }
 }

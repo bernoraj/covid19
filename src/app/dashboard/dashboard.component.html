@@ -20,7 +20,7 @@
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="/home">Home</a>
+        <a class="nav-link" href="">Home</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">About</a>
@@ -32,8 +32,9 @@
   </div>
 </nav>
 <br />
-
-<main>
+<span class="dashboarddate">Last Updated : {{dashboardupdatedDate}} </span>
+<br />
+<main>  
   <div class="covid-grid">
     <div class="covid-item">
       <h4 class="covid-title">TamilNadu</h4>
@@ -213,9 +214,9 @@
 
   </div>
 </main>
-
+<br>
 <div class="chart-wrapper chartmap">
-  <h2>Spread & Recovery Pattern:</h2>
+  <h2>Spread Pattern:</h2>
   <canvas
     baseChart
     [datasets]="lineChartData"
@@ -228,103 +229,4 @@
   </canvas>
 </div>
 
-<!-- <div class="MasterTable">
-  <table
-    mat-table
-    [dataSource]="dataSource"
-    multiTemplateDataRows
-    class="mat-elevation-z8"
-  >
-    <ng-container
-      matColumnDef="{{ column }}"
-      *ngFor="let column of displayedColumns"
-    >
-      <th class="mainTableHeader" mat-header-cell *matHeaderCellDef>
-        {{ column }}
-      </th>
-      <td mat-cell *matCellDef="let element">
-        <div
-          class="example-element-detail"
-          [@detailExpand]="element == expandedElement ? 'up' : 'down'"
-        >
-          <mat-icon class="chevron" *ngIf="column=='district'">{{ element == expandedElement ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon> 
-          {{ element[column] }}
-        </div>
-      </td>
-    </ng-container>
 
-   
-    <ng-container matColumnDef="expandedDetail">
-      <td
-        mat-cell
-        *matCellDef="let element"
-        [attr.colspan]="displayedColumns.length"
-      >
-        <div
-          class="example-element-detail"
-          [@detailExpand]="
-            element == expandedElement ? 'expanded' : 'collapsed'
-          "
-        >
-          <span *ngIf="element.city == ''">Detail info not found</span>
-
-          <table class="mat-elevation-z8 citytable" *ngIf="element.city != ''">
-            <ng-container>
-              <tr>
-                <th>
-                  Zone
-                </th>
-                <th></th>
-                <th>
-                  Confirmed
-                </th>
-                <th></th>
-                <th>
-                  Active
-                </th>
-                <th></th>
-                <th>
-                  Recovered
-                </th>
-                <th></th>
-                <th>
-                  Deceased
-                </th>
-              </tr>
-
-              <tr mat-cell *ngFor="let ele of element.city">
-                <td>{{ ele.cityName }}</td>
-                <td></td>
-                <td>{{ ele.confirmed }}</td>
-                <td></td>
-                <td>{{ ele.active }}</td>
-                <td></td>
-                <td>{{ ele.recovered }}</td>
-                <td></td>
-                <td>{{ ele.deceased }}</td>
-              </tr>
-            </ng-container>
-          </table>
-        </div>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-    <tr
-      mat-row
-      *matRowDef="let element; columns: displayedColumns"
-      class="example-element-row"
-      [class.example-expanded-row]="expandedElement === element"
-      (click)="
-        expandedElement === element
-          ? (expandedElement = null)
-          : (expandedElement = element)
-      "
-    ></tr>
-    <tr
-      mat-row
-      *matRowDef="let row; columns: ['expandedDetail']"
-      class="example-detail-row"
-    ></tr>
-  </table>
-</div> -->
