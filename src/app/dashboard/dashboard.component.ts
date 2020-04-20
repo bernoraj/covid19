@@ -93,7 +93,7 @@ export class DashboardComponent implements OnInit,AfterViewInit, OnDestroy {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   //chart
-  lineChartData: ChartDataSets[] = [{data:[1,2,3],label:'Confirmed'}];
+  lineChartData: ChartDataSets[] = [];
 
   lineChartLabels: Label[] = [];
   
@@ -182,14 +182,16 @@ export class DashboardComponent implements OnInit,AfterViewInit, OnDestroy {
         }
       }).value();
 
-      var nodes=[];
-      //{"id": "P178", "group": 1},
-      var links=[];
-      // {"source":"P264","target":"Delhi","value":2},
+      var nodes=[];     
+      var links=[];     
 
 
       d3Data.forEach((x,i)=>{
         if(x.hotspot!=""){
+        if(x.hotspot==("Delhi  Railwaystation"))   
+        {
+          x.hotspot="Delhi";
+        }
         var tempHotspot={"id":x.hotspot,"group":i,"district":x.hotspot};
         nodes.push(tempHotspot);
 
