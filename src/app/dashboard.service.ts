@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http,Headers,RequestOptions,Response } from '@angular/http';
+import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -8,37 +8,37 @@ import { map } from 'rxjs/operators';
 export class DashboardService {
 
   getStats(){
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
-    //let body={Country:data};
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers });
+    // let body={Country:data};
     return this.http.get('/api/v1/covid_all', options )
     .pipe(map((res: Response) => res.json()));
   }
 
   getTNStats(){
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });    
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers });
     return this.http.get('/api/v1/covid_TN', options )
     .pipe(map((res: Response) => res.json()));
   }
 
   getTNDistrict(){
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });    
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers });
     return this.http.get('/api/v1/district', options )
     .pipe(map((res: Response) => res.json()));
   }
-  
+
   getDashboard(){
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });    
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers });
     return this.http.get('/api/v1/dash', options )
     .pipe(map((res: Response) => res.json()));
   }
 
   getpatientdetails(){
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });    
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers });
     return this.http.get('/api/v1/patient', options )
     .pipe(map((res: Response) => res.json()));
   }

@@ -1,241 +1,10 @@
-// html,
-// body {
-//   font-family: "Roboto";
-// }
-
-// main {
-//   display: grid;
-//   grid-template-columns: repeat(2, minmax(100px, 1fr));
-//   grid-template-rows: repeat(1, minmax(100px, 1fr));
-
-//   svg {
-//     width: minmax(100px, 20em);
-//     height: minmax(100px, 20em);
-//   }
-
-//   .sub-routine {
-//     grid-template-rows: 1fr;
-//     align-items: flex-start;
-//     position: relative;
-
-//     .header {
-//       font-size: minmax(1em, 2em);
-//       font-weight: bold;
-//     }
-//     .update {
-//       font-size: 11px;
-//       color: olivedrab;
-//     }
-
-//     .stats {
-//       grid-gap: 1em;
-
-//       .text-stats {
-//         font-size: x-small;
-//         padding-right: 1em;
-//         color: red;
-//       }
-//     }
-
-//     .chart-wrapper {
-//       position: absolute;
-//       margin: auto;
-//       height: 50vh;
-//       width: 40vw;
-//       top: 150px;
-//       right: 50px;
-//       @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2) {
-//         height: 30vh;
-//         top:70px;
-//       }
-    
-//     }
-//   }
-// }
-
-// path {
-//   fill: darkseagreen;
-//   stroke: rgb(252, 252, 252);
-//   stroke-width: 1px;
-//   /* transition: fill 0.3ms; */
-// }
-// path:hover {
-//   stroke: darkred;
-//   fill: darkred;
-//   stroke-width: 5px;
-// }
-// .groupedHover:hover {
-//   path {
-//     stroke: darkred;
-//     fill: darkred;
-//     stroke-width: 5px;
-//   }
-// }
-
-// .MasterTable {
-//   display: grid;
-//   grid-template-columns: 1fr;
-//   align-items: baseline;
-//   justify-items: center;
-
-//   table {
-//     table-layout: auto;
-//     width: 70%;
-//   }
-
-//   tr.example-detail-row {
-//     height: 0;
-//     align-content: center;
-//   }
-
-//   tr.example-element-row:not(.example-expanded-row):hover {
-//     background: #c4c4c4;
-//   }
-
-//   tr.example-element-row:not(.example-expanded-row):active {
-//     background: #efefef;
-//   }
-
-//   .example-element-row td {
-//     border-bottom-width: 0;
-//     justify-content: flex-end;
-//   }
-
-//   .example-element-detail {
-//     display: flex;
-//     overflow: hidden;
-//     text-overflow: ellipsis;
-//     @media screen and (max-width: 400px) {
-//       font-size: x-small;
-//     }
-//   }
-//   .chevron {
-//     font-size: 13px;
-//   }
-//   .example-element-diagram {
-//     min-width: 80px;
-//     width: 500px;
-//     // border: 1px solid black;
-//     padding: 8px;
-//     font-weight: lighter;
-//     margin: 8px 0;
-//     //height: 120px;
-//     overflow-y: scroll;
-//     background: rgb(235, 234, 234);
-//   }
-
-//   .citytable {
-//     width: 100%;
-//     height: 100%;
-//   }
-
-//   .mainTableHeader {
-//     text-transform: capitalize;
-//     background: mediumslateblue;
-//   }
-// }
-
-// @media screen and (max-width: 415px) {
-//   main {
-//     display: grid;
-//     grid-template-columns: repeat(1, 1fr);
-//     grid-template-rows: repeat(1, 1fr);
-//     position: relative;
-
-//     .sub-routine {
-//       position: absolute;
-
-//       .header {
-//         font-size: minmax(1em, 2em);
-//         font-weight: bold;
-//       }
-
-//       .chart-wrapper {
-//         grid-template-rows: 1fr;
-//         position: absolute;
-//         margin: auto;
-//         height: 40vh;
-//         width: 45vh;
-//         top: 425px;
-//         right: -160px;
-//       }
-//     }
-//   }
-//   .MasterTable {
-//     position: absolute;
-//     top: 850px;
-//     width: 10vh;
-
-//     table {
-//       table-layout: auto;
-//       width: 50%;
-//       height: 50%;
-//     }
-//     .mainTableHeader {
-//       text-transform: capitalize;
-//       background: mediumslateblue;
-//       font-size: x-small;
-//     }
-//   }
-// }
-
-// //iphone plus series
-// @media screen and (min-device-width: 414px) and (max-width: 736px) {
-//   main {
-//     display: grid;
-//     grid-template-columns: repeat(1, 1fr);
-//     grid-template-rows: repeat(1, 1fr);
-//     position: relative;
-
-//     .sub-routine {
-//       position: absolute;
-
-//       .header {
-//         font-size: minmax(1em, 2em);
-//         font-weight: bold;
-//       }
-
-//       .chart-wrapper {
-//         grid-template-rows: 1fr;
-//         position: absolute;
-//         margin: auto;
-//         height: 40vh;
-//         width: 45vh;
-//         top: 480px;
-//         right: -160px;
-//       }
-//     }
-//   }
-//   .MasterTable {
-//     position: absolute;
-//     top: 900px;
-//     width: 10vh;
-
-//     table {
-//       table-layout: auto;
-//       width: 50%;
-//       height: 50%;
-//     }
-//     .mainTableHeader {
-//       text-transform: capitalize;
-//       background: mediumslateblue;
-//       font-size: x-small;
-//     }
-//   }
-// }
 
 circle {
   cursor: pointer;
   transition: fill 1s ease-out;
   }
 
-// .canvasObjects{
-  
-//   display: grid;
-//   grid-template-columns: 1fr;
-//   grid-template-rows: 1fr;
-  
-// }
+
 
 .navbar{
 
@@ -256,8 +25,7 @@ circle {
 h4.covid-title {
   margin: 0;
   margin-bottom: 10px;
-  font-size: 25px;
-  //font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 25px;  
   line-height: 28px;
   font-weight: bolder;
 }
@@ -272,8 +40,7 @@ h4.covid-title {
   align-items: center;
 }
 
-.covid-item {  
-  //background: #efefef;
+.covid-item {    
   justify-content: space-evenly;
   padding: 10px;
   margin-bottom: 10px;
@@ -371,29 +138,24 @@ h4.covid-title {
   grid-template-areas: 'left right';
   grid-template-columns: repeat(2,1fr);
   grid-template-rows: 80px;
-  grid-gap: 1em;
-  //align-items:center;  
-  //justify-content: center;  
+  grid-gap: 1em;  
   margin: 0;
-  //width: 50em;
+  
 }
 
 .mapofTN{
-  grid-area: left;
-  //grid-column: 1 / 4;
+  grid-area: left;  
   grid-row: 2 / 3;
  margin-left: 5em;
 
  a{
-  path {
-    //fill: darkseagreen;
+  path {    
     stroke: rgb(252, 252, 252);
     stroke-width: 1px;
-    transition: fill 3s ease-out
+    transition: fill 1s ease-out
   }
   path:hover {
-    stroke:#270100;
-    //fill: darkred;
+    stroke:#270100;    
     stroke-width: 3px;
     
   }
@@ -404,22 +166,14 @@ h4.covid-title {
 
 .covid-map-stats{
 
-  grid-area: right;
- // grid-column: 4 / 5;
-  grid-row: 2 / 3; 
-  //height: 150px;
+  grid-area: right; 
+  grid-row: 2 / 3;   
 }
 
 
  
 
-// .groupedHover:hover {
-//   path {
-//     stroke: darkred;
-//     fill: darkred;
-//     stroke-width: 5px;
-//   }
-//}
+
 
 .chartmap{
 
@@ -454,29 +208,20 @@ main{
   svg {
     
     a{
-      path {
-        //fill: darkseagreen;
+      path {        
         stroke: rgb(252, 252, 252);
         stroke-width: 1px;
         transition: fill 0.3ms; 
       }
       path:hover {
-        stroke:#270100;
-        //fill: darkred;
+        stroke:#270100;        
         stroke-width: 3px;
         
       }
     
      } 
    
-    // .groupedHover:hover {
-    //   path {
-    //     stroke: darkred;
-    //     fill: darkred;
-    //     stroke-width: 5px;
-    //   }
-    // }
-    
+        
   }
 
   .mapsandstats{
@@ -506,11 +251,6 @@ main{
   
   
 
-//   .chart-wrapper{
-// height: 40vh;
-// width: auto;
-
-//   }
 }
 .chartmap{
 
