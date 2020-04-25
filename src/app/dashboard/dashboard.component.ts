@@ -343,7 +343,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
           const zonedetails = this.datablock.filter(t => t.district == x.title)[0];
 
           if (zonedetails != null && zonedetails != undefined){
-            if (zonedetails.confirmed > red){
+            if (zonedetails.confirmed >= red){
               x.zone = '#DC1C13';
 
             }
