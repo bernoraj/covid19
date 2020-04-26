@@ -297,8 +297,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
       const diffS = diff / 1000;
       const diffM = diffS / 60;
-      const diffH = Math.ceil(diffM / 60);
-      const diffD = Math.ceil(diffH / 24);
+      const diffH = diffM / 60;
+      const diffD = diffH / 24;
 
 
 
@@ -306,18 +306,18 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       if (diffH > 24)
       {
         if (diffD == 1){
-          this.dashboardupdatedDate = diffD + ' ' + 'Day Ago';
+          this.dashboardupdatedDate = Math.round(diffD) + ' ' + 'Day Ago';
         }
         else{
-          this.dashboardupdatedDate = diffD + ' ' + 'Days Ago';
+          this.dashboardupdatedDate = Math.round(diffD) + ' ' + 'Days Ago';
         }
       }else{
 
          if (diffH == 1){
-          this.dashboardupdatedDate = diffH + ' ' + 'Hour Ago';
+          this.dashboardupdatedDate = Math.round(diffH) + ' ' + 'Hour Ago';
         }
         else{
-          this.dashboardupdatedDate = diffH + ' ' + 'Hours Ago';
+          this.dashboardupdatedDate = Math.round(diffH) + ' ' + 'Hours Ago';
         }
       }
 
@@ -430,7 +430,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     .data(graph.nodes)
     .enter().append('circle')
       .attr('pointer-events', 'all')
-      .on('mouseover', function(d){ return  div.html(d.group); })
+      .on('mouseover', function(d){ return  div.html(d.district); })
       .attr('r', 5)
       .attr('fill', (d) => this.color(d.group))
       .call(d3.drag()

@@ -184,6 +184,13 @@ h4.covid-title {
     font-size: large;
   }
 }
+.network{
+  h2{
+    padding-left: 1.5em;
+    font-size: large;
+    padding-top: 1em;
+  }
+}
 
 
 
@@ -269,9 +276,15 @@ main{
   .network{
 
       position: absolute;
-      top:90em;
+      top:85em;
       svg{
         width: 100% !important;
+      }
+      h2{
+        position: relative;
+        padding-left: 1.5em;
+        font-size: small;
+        top:13em;
       }
 
   }
@@ -279,3 +292,106 @@ main{
 
 }
 
+
+//iphone X
+@media screen and (min-device-width: 375px) 
+and (max-device-width: 812px) 
+and (-webkit-min-device-pixel-ratio: 3)
+and (orientation: portrait) 
+{
+
+
+  .dashboarddate{
+    display: flex;
+    position: absolute;
+    width: auto;
+    left:13em;
+   
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 25px;
+    text-align: center;  
+    color:#16a085;
+  }
+  
+  main{
+  //SVG Map
+    svg {
+      
+      a{
+        path {        
+          stroke: rgb(252, 252, 252);
+          stroke-width: 1px;
+          transition: fill 0.3ms; 
+        }
+        path:hover {
+          stroke:#270100;        
+          stroke-width: 3px;
+          
+        }
+      
+       } 
+     
+          
+    }
+  
+    .mapsandstats{
+  
+      display: flex; 
+      justify-content: center;
+      position: relative;
+      
+       .mapofTN{   
+        position: absolute;
+        width: 40vh;
+        height: 50vh;    
+        right: 2.5em;
+        top:10em;
+  
+        .legend{
+  
+          width: 100% !important;
+          position: relative;
+          right:2px;
+        }
+        
+      }   
+    
+          
+    }
+    
+    
+  
+  }
+  .chartmap{
+  
+    position: absolute;
+    height: 40vh;
+    width: 90%;
+    top:80em;
+    h2{
+      padding-left: 1.5em;
+      font-size: small;
+    }
+    
+    }
+  
+  
+    .network{
+  
+        position: absolute;
+        top:95em;
+        svg{
+          width: 100% !important;
+        }
+        h2{
+          position: relative;
+          padding-left: 1.5em;
+          font-size: small;
+          top:13em;
+        }
+  
+    }
+  
+  
+  }
