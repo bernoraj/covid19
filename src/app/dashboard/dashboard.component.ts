@@ -359,8 +359,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
             x.zone = '#FFFFFF';
           }
 
-
-
           this.svgData.push(x);
 
       });
