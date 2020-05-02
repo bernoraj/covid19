@@ -234,7 +234,13 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       // dashboard Misc
       if (data != null && data.length > 0)
       {
-        const sorted = _.orderBy(data, ['updateddate']);
+        //const sorted = _.orderBy(data, ['updateddate']);
+
+        const sorted = _.sortBy(data, function(dateObj) {
+          return new Date(dateObj.updateddate);
+        });
+
+
         const latest = sorted[sorted.length - 1];
         // latest count
         this.dashSamples = latest.samples;
