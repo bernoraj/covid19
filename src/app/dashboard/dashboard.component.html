@@ -205,7 +205,7 @@
           }">
             <i class="fa fa-arrow-up"></i> {{ mapsTodaysConfirmedCount }}
           </div>
-          <div class="covid-value" *ngIf="districtHeaderBlock!='TamilNadu'">{{ confirmedCount }}</div>
+          <div class="covid-value" *ngIf="districtHeaderBlock!='TamilNadu'">{{ confirmedCount | number }}</div>
           <div class="covid-label" *ngIf="districtHeaderBlock!='TamilNadu'">Confirmed Count</div>
         </div>       
       </div>     
