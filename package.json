@@ -27,7 +27,7 @@
     "d3": "^5.15.1",
     "font-awesome": "^4.7.0",
     "http": "0.0.1-security",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "ng2-charts": "^2.3.0",
